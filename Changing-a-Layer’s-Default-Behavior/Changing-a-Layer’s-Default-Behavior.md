@@ -2,11 +2,11 @@
 
 核心动画使用“行为对象”为图层实现了隐式动画，所谓的“行为对象”即是实现了 `CAAction` 协议的对象。所有的 `CAAnimation` 对象都实现了该协议，改变图层属性时触发的隐式动画就是依靠 `CAAnimation` 实现的。图层的可动画属性都会关联对应的 `CAAction` 对象，对于图层的自定义属性，可以另行提供 `CAAction` 对象，从而实现动画效果。
 
-- [自定义 CAAction 对象](#Custom Action Objects Adopt the CAAction Protocol)
-- [CAAction 对象需要安装到图层上才有效果](Action Objects Must Be Installed On a Layer to Have an Effect)
-- [使用 CATransaction 临时禁用图层行为](#Disable Actions Temporarily Using the CATransaction Class)
+- [自定义 CAAction 对象](#Custom-Action-Objects-Adopt-the-CAAction-Protocol)
+- [CAAction 对象需要安装到图层上才有效果](#Action-Objects-Must-Be-Installed-On-a-Layer-to-Have-an-Effect)
+- [使用 CATransaction 临时禁用图层行为](#Disable-Actions-Temporarily-Using-the-CATransaction-Class)
 
-<a name="Custom Action Objects Adopt the CAAction Protocol"></a>
+<a name="Custom-Action-Objects-Adopt-the-CAAction-Protocol"></a>
 ## 自定义 CAAction 对象
 
 要实现自定义的 `CAAction` 对象，需要实现 `CAAction` 协议，该协议只有一个方法 `runActionForKey(_:object:arguments:)`。在这个方法中，利用传入的可用信息来执行自定义的行为，可以在此方法中为图层添加动画，也可以执行其他任务，当然这样就没有动画效果了。
@@ -18,7 +18,7 @@
 - 图层变为隐藏状态，或者从图层层级移除，`key` 为 `kCAOnOrderOut`。
 - 图层即将参与过渡动画，`key` 为 `kCATransition`。
 
-<a name="Action Objects Must Be Installed On a Layer to Have an Effect"></a>
+<a name="Action-Objects-Must-Be-Installed-On-a-Layer-to-Have-an-Effect"></a>
 ## CAAction 对象需要安装到图层上才有效果
 
 图层必须能够查找到相应的 `CAAction` 对象才能够执行它。当特定事件发生时，例如改变图层属性，图层会调用 `actionForKey(_:)` 方法来查找 `key` 对应的 `CAAction` 对象。可以通过好几种方式来提供 `CAAction` 对象，核心动画会按照如下顺序进行查找：
@@ -38,7 +38,6 @@
 
 ```swift
 override func actionForLayer(layer: CALayer, forKey event: String) -> CAAction? {
-
     guard event == "contents" else {
         return super.actionForLayer(layer, forKey: event)
     }
@@ -52,7 +51,7 @@ override func actionForLayer(layer: CALayer, forKey event: String) -> CAAction? 
 }
 ```
 
-<a name="Disable Actions Temporarily Using the CATransaction Class"></a>
+<a name="Disable-Actions-Temporarily-Using-the-CATransaction-Class"></a>
 ## 使用 CATransaction 临时禁用图层行为
 
 使用 `CATransaction` 的类方法可以临时禁用图层的行为，通常用于临时禁用图层的隐式动画：
